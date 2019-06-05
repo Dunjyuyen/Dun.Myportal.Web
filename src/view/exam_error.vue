@@ -6,18 +6,42 @@
       <mu-chip color="primary">{{examQuestion.desc}}</mu-chip>
       <mu-chip color="primary">{{examQuestion.typeId}}</mu-chip>
       <mu-chip color="primary">{{examQuestion.level == 1? '易':'难'}}</mu-chip>
-      <van-checkbox-group class="select-control-group" v-model="user_answer">
+      <van-radio-group
+        v-if="examQuestion.typeId==1"
+        class="select-control-group"
+        v-model="user_answer_single"
+      >
+        <van-radio name="A">{{examQuestion.option_1}}</van-radio>
+        <van-radio name="B">{{examQuestion.option_2}}</van-radio>
+        <van-radio name="C">{{examQuestion.option_3}}</van-radio>
+        <van-radio name="D">{{examQuestion.option_4}}</van-radio>
+      </van-radio-group>
+
+      <van-checkbox-group
+        v-if="examQuestion.typeId==2"
+        class="select-control-group"
+        v-model="user_answer"
+      >
         <van-checkbox name="A">{{examQuestion.option_1}}</van-checkbox>
         <van-checkbox name="B">{{examQuestion.option_2}}</van-checkbox>
         <van-checkbox name="C">{{examQuestion.option_3}}</van-checkbox>
         <van-checkbox name="D">{{examQuestion.option_4}}</van-checkbox>
       </van-checkbox-group>
+
+      <van-radio-group
+        v-if="examQuestion.typeId==3"
+        class="select-control-group"
+        v-model="user_answer_single"
+      >
+        <van-radio :name="1">正确 √</van-radio>
+        <van-radio :name="-1">错误 ×</van-radio>
+      </van-radio-group>
       <van-notice-bar wrapable v-if="isDone && !isError" color="#4caf50" :scrollable="false">作答正确!</van-notice-bar>
       <van-notice-bar
         wrapable
         v-if="isDone && isError"
         :scrollable="false"
-      >作答错误! 正确答案:{{examQuestion.answer}}</van-notice-bar>
+      >作答错误! 正确答案:{{examQuestion.typeId==3? examQuestion.answer==1?'√':'×' :examQuestion.answer }}</van-notice-bar>
     </mu-card-text>
 
     <mu-card-actions>
@@ -41,6 +65,7 @@ export default {
       isShow: false,
       isShow: false,
       isDone: false,
+      user_answer_single:"",
       user_answer: ["A", "B"]
     };
   },
@@ -73,7 +98,7 @@ export default {
           })
           .then(() => {
             this.$store.commit("initExamData", () => {
-              this.$router.push("/hello");
+              this.$router.push("/hello/error");
             });
           })
           .catch(() => {});
@@ -85,8 +110,8 @@ export default {
         currentDoneExamId.length < exams.length + 1
       ) {
         var question = exams[Math.floor(Math.random() * exams.length)];
-        loop = question.id;
-        this.examQuestion = question;
+        loop = question.examQuestionId;
+        this.examQuestion = question.examQuestion;
       }
       this.isShow = true;
     },
@@ -105,13 +130,30 @@ export default {
     },
     handleSubmit() {
       this.isDone = true;
-      this.isError = this.optionCheck(this.user_answer);
-      if (this.isError) {
-        let str = "";
-        for (var i in this.user_answer) {
-          str += this.user_answer[i];
-        }
-        error.addExamUserError(this.examQuestion.id, str);
+
+      switch (this.examQuestion.typeId) {
+        case 1:
+          this.isError = this.user_answer_single != this.examQuestion.answer;
+          if (this.isError) {
+            //error.addExamUserError(this.examQuestion.id, this.user_answer_single);
+          }
+          break;
+        case 2:
+          this.isError = this.optionCheck(this.user_answer);
+          if (this.isError) {
+            let str = "";
+            for (var i in this.user_answer) {
+              str += this.user_answer[i];
+            }
+            //error.addExamUserError(this.examQuestion.id, str);
+          }
+          break;
+        case 3:
+          this.isError = this.user_answer_single != this.examQuestion.answer;
+          if (this.isError) {
+            //error.addExamUserError(this.examQuestion.id, this.user_answer_single);
+          }
+          break;
       }
     },
     handleNext() {
@@ -124,7 +166,7 @@ export default {
       this.$dialog
         .confirm({
           title: "提示",
-          message: "确认是否退出考试"
+          message: "确认是否退出"
         })
         .then(() => {
           this.$store.commit("initExamData", () => {

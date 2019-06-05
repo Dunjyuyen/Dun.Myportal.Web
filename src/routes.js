@@ -1,9 +1,15 @@
 import login from '@/view/login'
 import hello from '@/view/hello'
 import list from '@/view/list'
+import error from '@/view/error'
+
+
 import exam_single from '@/view/exam_single'
 import exam_mult from '@/view/exam_mult'
 import exam_judge from '@/view/exam_judge'
+
+import exam_error from '@/view/exam_error'
+
 import exam_result from '@/view/exam_result'
 let routes = [{
     path: '/',
@@ -17,6 +23,10 @@ let routes = [{
       path: '/hello',
       name: '首页',
       component: list,
+    },{
+      path: '/hello/error',
+      name: '首页',
+      component: error,
     }]
   },{
     path: '/exam_single',
@@ -34,6 +44,12 @@ let routes = [{
     path: '/exam_result',
     name: '考试结果',
     component: exam_result,
-  }]
+  }
+  ,{
+    path: '/exam_error',
+    name: '错题集群',
+    component: exam_error,
+  }
+]
 
   export default routes;

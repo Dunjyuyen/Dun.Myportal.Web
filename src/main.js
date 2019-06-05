@@ -16,7 +16,8 @@ import {
   CheckboxGroup,
   Toast,
   Dialog,
-  NoticeBar 
+  NoticeBar,
+  Loading 
 } from 'vant';
 import 'vant/lib/index.css'
 import 'muse-ui/dist/muse-ui.css';
@@ -25,7 +26,7 @@ import store from '@/vuex/index'
 
 Vue.use(MouseUI);
 
-Vue.use(RadioGroup).use(Radio).use(Checkbox).use(CheckboxGroup).use(Toast).use(Dialog).use(NoticeBar);
+Vue.use(RadioGroup).use(Radio).use(Checkbox).use(CheckboxGroup).use(Toast).use(Dialog).use(NoticeBar).use(Loading);
 
 Vue.use(VueCookies)
 Vue.config.productionTip = false

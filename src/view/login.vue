@@ -39,7 +39,7 @@ export default {
       validateForm: {
         username: "",
         password: "",
-        rememberClient: false
+        rememberClient: true
       }
     };
   },
@@ -49,7 +49,8 @@ export default {
         if (!result) return;
         let param = {
           userNameOrEmailAddress: this.validateForm.username,
-          password: this.validateForm.password
+          password: this.validateForm.password,
+          rememberClient:this.validateForm.rememberClient,
         };
         authenticate(param).then(res => {
           if (res.success) {
