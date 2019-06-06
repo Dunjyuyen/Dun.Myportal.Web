@@ -1,8 +1,14 @@
 <template>
 <div>
-  <van-loading style="margin: 0 16px;" v-if="loading" type="spinner" color="#1989fa" size="24px">加载中...</van-loading>
-  <mu-list>
-    <mu-list-item v-for="item in groupErrorListData"  button @click="handleOnClickExam(item.examGroup.id)" :ripple="false">
+  <!-- <van-loading style="margin: 0 16px;" v-if="loading" type="spinner" color="#1989fa" size="24px">加载中...</van-loading> -->
+  <mu-list data-mu-loading-color="secondary"  v-loading="loading">
+    <mu-list-item v-if="loading" button :ripple="false">
+      <mu-list-item-title></mu-list-item-title>
+      <mu-list-item-action>
+         <mu-badge :content="0" color="secondary"></mu-badge>
+      </mu-list-item-action>
+    </mu-list-item>
+    <mu-list-item v-for="item in groupErrorListData" :key='item.examGroup.id'  button @click="handleOnClickExam(item.examGroup.id)" :ripple="false">
       <mu-list-item-title>{{item.examGroup.name}}</mu-list-item-title>
       <mu-list-item-action>
          <mu-badge :content="item.count+''" color="secondary"></mu-badge>

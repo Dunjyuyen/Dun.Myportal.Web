@@ -7,8 +7,15 @@ import VueCookies from 'vue-cookies'
 import VueRouter from 'vue-router'
 
 
-import MouseUI from 'muse-ui'
+import MouseUI from 'muse-ui';
+import Loading from 'muse-ui-loading';
+import 'muse-ui-loading/dist/muse-ui-loading.css' // load css
+import 'muse-ui/dist/muse-ui.css';
+Vue.use(MouseUI).use(Loading);
 
+
+
+//vant
 import {
   RadioGroup,
   Radio,
@@ -17,16 +24,25 @@ import {
   Toast,
   Dialog,
   NoticeBar,
-  Loading 
+  
 } from 'vant';
 import 'vant/lib/index.css'
-import 'muse-ui/dist/muse-ui.css';
+Vue
+.use(RadioGroup)
+.use(Radio)
+.use(Checkbox)
+.use(CheckboxGroup)
+.use(Toast)
+.use(Dialog)
+.use(NoticeBar)
+
+
 
 import store from '@/vuex/index'
 
-Vue.use(MouseUI);
 
-Vue.use(RadioGroup).use(Radio).use(Checkbox).use(CheckboxGroup).use(Toast).use(Dialog).use(NoticeBar).use(Loading);
+
+
 
 Vue.use(VueCookies)
 Vue.config.productionTip = false

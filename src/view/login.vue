@@ -50,14 +50,24 @@ export default {
         let param = {
           userNameOrEmailAddress: this.validateForm.username,
           password: this.validateForm.password,
-          rememberClient:this.validateForm.rememberClient,
+          rememberClient: this.validateForm.rememberClient
         };
+        const loading = this.$loading();
         authenticate(param).then(res => {
-          if (res.success) {
+          if (!res.result.exception) {
             this.$store.commit("set_token", res.result);
             this.$store.commit("set_enc_auth_token", res.result);
             this.$store.commit("set_userid", res.result);
+            loading.close();
             this.$router.push("/hello");
+          } else {
+            this.$dialog
+              .alert({
+                title: '登录失败',
+                message:  res.result.exception.Message
+              })
+              .then(() => {});
+            loading.close();
           }
         });
       });
